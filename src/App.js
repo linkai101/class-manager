@@ -1,24 +1,25 @@
-import logo from './logo.svg';
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import './App.css';
+
+import NotFound from './components/NotFound';
+import HomePage from './components/HomePage';
+import Classes from './components/classes/Classes';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <HelmetProvider>
+      <Router>
+        <div className="App">
+          <Switch>
+            <Route path="/classes" component={Classes}/>
+            <Route exact path="/" component={HomePage}/>
+            <Route component={NotFound}/>
+          </Switch>
+        </div>
+      </Router>
+    </HelmetProvider>
   );
 }
 
