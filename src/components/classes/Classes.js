@@ -77,7 +77,7 @@ export default function Classes() {
     const storedDataVersion = localStorage.getItem(LOCAL_STORAGE_VERSION_KEY);
     if (!storedDataVersion) localStorage.setItem(LOCAL_STORAGE_VERSION_KEY, LOCAL_STORAGE_VERSION);
     if (storedDataVersion && storedDataVersion !== LOCAL_STORAGE_VERSION)
-      return console.log("Error: Could not store data, invalid version!");
+      return enqueueSnackbar('Error while reading local save: Could not store data, invalid version!', { variant: 'error' });
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(classes));
     setDialogsOpen(classes.map(classItem => ({ id: classItem.id, open: false })));
   }, [classes]);
