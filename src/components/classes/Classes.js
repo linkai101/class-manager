@@ -1,26 +1,19 @@
 import React from 'react'
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import HomeOutlined from '@material-ui/icons/HomeOutlined';
-import ViewListOutlinedIcon from '@material-ui/icons/ViewListOutlined';
-import SaveAltIcon from '@material-ui/icons/SaveAlt';
-import PublishOutlinedIcon from '@material-ui/icons/PublishOutlined';
-
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
+import { useSnackbar } from 'notistack';
 
 import Clock from './Clock';
 import ClassList from './ClassList';
 import ClassDialogs from './ClassDialogs';
 import Options from './Options';
+import Footer from './Footer';
 
-const LOCAL_STORAGE_KEY = 'linkaiwu.homeworkManager.classes';
-const LOCAL_STORAGE_VERSION_KEY = 'linkaiwu.homeworkManager.classes.version';
-const LOCAL_STORAGE_VERSION = "1";
+require('dotenv').config();
+const LOCAL_STORAGE_KEY = process.env.REACT_APP_LOCAL_STORAGE_KEY;
+const LOCAL_STORAGE_VERSION_KEY = process.env.REACT_APP_LOCAL_STORAGE_VERSION_KEY;
+const LOCAL_STORAGE_VERSION = process.env.REACT_APP_LOCAL_STORAGE_VERSION;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,19 +57,20 @@ export default function Classes() {
   const [classes, setClasses] = React.useState([]);
   const [optionsOpen, setOptionsOpen] = React.useState(false);
   const [dialogsOpen, setDialogsOpen] = React.useState([]);
-  const [snackOpen, setSnackOpen] = React.useState(true);
   const styles = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
 
   React.useEffect(() => {
+    enqueueSnackbar('This app is in beta! More features and customizability will come soon!', { variant: 'info' });
     // Read local save
     const storedDataVersion = localStorage.getItem(LOCAL_STORAGE_VERSION_KEY);
     if (storedDataVersion > LOCAL_STORAGE_VERSION)
-      return console.log("Error: Outdated client!");
+      return enqueueSnackbar('Error while reading local save: Outdated app version!', { variant: 'error' });
     if (storedDataVersion < LOCAL_STORAGE_VERSION)
-      return console.log("Error: Local storage data needs to be updated, a future update will support this!"); // TODO
+      return enqueueSnackbar('Error while reading local save: Local save data needs to be updated, a future update will support this!', { variant: 'error' });  // TODO: Add old data conversion
     const storedData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
     if (storedData) setClasses(storedData);
-  }, [])
+  }, [enqueueSnackbar]);
 
   React.useEffect(() => {
     // Update local save
@@ -96,21 +90,10 @@ export default function Classes() {
       <main>
         <Clock/>
         <ClassList classes={classes} dialogsOpen={dialogsOpen} setDialogsOpen={setDialogsOpen}/>
-        <footer className={styles.footer}>
-          <Tooltip title="Home"><Link to="/"><IconButton size="small"><HomeOutlined/></IconButton></Link></Tooltip>
-          <Tooltip title="Edit"><IconButton size="small" onClick={() => setOptionsOpen(true)}><ViewListOutlinedIcon/></IconButton></Tooltip>
-          <Tooltip title="Download Data (coming soon)"><IconButton size="small"><SaveAltIcon/></IconButton></Tooltip>
-          <Tooltip title="Upload Data (coming soon)"><IconButton size="small"><PublishOutlinedIcon/></IconButton></Tooltip>
-        </footer>
+        <Footer setOptionsOpen={setOptionsOpen} classes={classes} setClasses={setClasses}/>
       </main>
       <ClassDialogs dialogsOpen={dialogsOpen} setDialogsOpen={setDialogsOpen} classes={classes}/>
       <Options optionsOpen={optionsOpen} setOptionsOpen={setOptionsOpen} classes={classes} setClasses={setClasses}/>
-
-      <Snackbar autoHideDuration={5000} open={snackOpen} onClose={(e, reason) => {if (reason !== 'clickaway') setSnackOpen(false)}}>
-        <MuiAlert elevation={6} variant="filled" severity="info" onClose={(e, reason) => {if (reason !== 'clickaway') setSnackOpen(false)}}>
-          This app is in beta! More features and customizability will come soon!
-        </MuiAlert>
-      </Snackbar>
     </div>
   )
 }

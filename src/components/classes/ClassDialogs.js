@@ -5,7 +5,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Typography from '@material-ui/core/Typography';
 
 export default function ClassDialogs(props) {
   const { dialogsOpen, setDialogsOpen, classes } = props;
@@ -35,16 +34,12 @@ export default function ClassDialogs(props) {
     {classes.map(classItem => (
       <Dialog key={classItem.id} open={isOpen(classItem.id)} onClose={() => handleClose(classItem.id)}>
         <DialogTitle onClose={() => handleClose(classItem.id)}>{classItem.name}</DialogTitle>
-        <DialogContent dividers>
-          <Typography>
-            <strong>Meeting URL:</strong> {classItem.meetingURL}
-          </Typography>
-          <Typography>
-            {classItem.notes}
-          </Typography>
+        <DialogContent>
+          { classItem.meetingURL !== '' ? <span><strong>Meeting URL:</strong> {classItem.meetingURL}<br/></span> : null}
+          <i>{classItem.notes}</i>
         </DialogContent>
         <DialogActions>
-          <Button color="primary" onClick={() => handleClick(classItem.id)}>Join Class</Button>
+        {classItem.meetingURL !== '' ? <Button color="primary" onClick={() => handleClick(classItem.id)}>Join Class</Button> : null}
         </DialogActions>
       </Dialog>
     ))}
