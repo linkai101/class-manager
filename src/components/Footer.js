@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
@@ -9,7 +8,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Tooltip from '@material-ui/core/Tooltip';
-import HomeOutlined from '@material-ui/icons/HomeOutlined';
 import ViewListOutlinedIcon from '@material-ui/icons/ViewListOutlined';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
 import PublishOutlinedIcon from '@material-ui/icons/PublishOutlined';
@@ -25,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Footer(props) {
-  const { setOptionsOpen, classes, setClasses } = props;
+  const { setEditOpen, classes, setClasses } = props;
   const [exportDialogOpen, setExportDialogOpen] = React.useState(false);
   const styles = useStyles();
   const { enqueueSnackbar } = useSnackbar();
@@ -70,8 +68,7 @@ export default function Footer(props) {
 
   return (
     <footer className={styles.footer}>
-      <Tooltip title="Home"><Link to="/"><IconButton size="small"><HomeOutlined/></IconButton></Link></Tooltip>
-      <Tooltip title="Edit"><IconButton size="small" onClick={() => setOptionsOpen(true)}><ViewListOutlinedIcon/></IconButton></Tooltip>
+      <Tooltip title="Edit"><IconButton size="small" onClick={() => setEditOpen(true)}><ViewListOutlinedIcon/></IconButton></Tooltip>
       <Tooltip title="Export Data" onClick={() => setExportDialogOpen(true)}><IconButton size="small"><SaveAltIcon/></IconButton></Tooltip>
       <input accept="application/JSON" type="file" style={{display:"none"}} id="import-data-button" onChange={importData}/>
       <label htmlFor="import-data-button">

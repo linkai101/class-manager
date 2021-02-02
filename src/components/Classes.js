@@ -1,5 +1,4 @@
 import React from 'react'
-import { Helmet } from 'react-helmet-async';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack';
@@ -7,7 +6,7 @@ import { useSnackbar } from 'notistack';
 import Clock from './Clock';
 import ClassList from './ClassList';
 import ClassDialogs from './ClassDialogs';
-import Options from './Options';
+import Edit from './Edit';
 import Footer from './Footer';
 
 require('dotenv').config();
@@ -55,18 +54,21 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Classes() {
   const [classes, setClasses] = React.useState([]);
-  const [optionsOpen, setOptionsOpen] = React.useState(false);
+  const [editOpen, setEditOpen] = React.useState(false);
   const [dialogsOpen, setDialogsOpen] = React.useState([]);
   const styles = useStyles();
   const { enqueueSnackbar } = useSnackbar();
 
   React.useEffect(() => {
-    enqueueSnackbar('This app is in beta! More features and customizability will come soon!', { variant: 'info' });
+    // Temporary, make users move data to new site
+    if (window.location.hostname !== "classes.linkaiwu.com")
+      return enqueueSnackbar('Site moved to \'classes.linkaiwu.com\'! Export data and import on new site!', { variant: 'warning', persist: true });
+      
     // Read local save
     const storedDataVersion = localStorage.getItem(LOCAL_STORAGE_VERSION_KEY);
-    if (storedDataVersion > LOCAL_STORAGE_VERSION)
+    if (storedDataVersion && storedDataVersion > LOCAL_STORAGE_VERSION)
       return enqueueSnackbar('Error while reading local save: Outdated app version!', { variant: 'error' });
-    if (storedDataVersion < LOCAL_STORAGE_VERSION)
+    if (storedDataVersion && storedDataVersion < LOCAL_STORAGE_VERSION)
       return enqueueSnackbar('Error while reading local save: Local save data needs to be updated, a future update will support this!', { variant: 'error' });  // TODO: Add old data conversion
     const storedData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
     if (storedData) setClasses(storedData);
@@ -80,20 +82,17 @@ export default function Classes() {
       return enqueueSnackbar('Error while reading local save: Could not store data, invalid version!', { variant: 'error' });
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(classes));
     setDialogsOpen(classes.map(classItem => ({ id: classItem.id, open: false })));
-  }, [classes]);
+  }, [enqueueSnackbar, classes]);
 
   return (
     <div className={styles.root}>
-      <Helmet>
-        <title>Classes</title>
-      </Helmet>
       <main>
         <Clock/>
         <ClassList classes={classes} dialogsOpen={dialogsOpen} setDialogsOpen={setDialogsOpen}/>
-        <Footer setOptionsOpen={setOptionsOpen} classes={classes} setClasses={setClasses}/>
+        <Footer setEditOpen={setEditOpen} classes={classes} setClasses={setClasses}/>
       </main>
       <ClassDialogs dialogsOpen={dialogsOpen} setDialogsOpen={setDialogsOpen} classes={classes}/>
-      <Options optionsOpen={optionsOpen} setOptionsOpen={setOptionsOpen} classes={classes} setClasses={setClasses}/>
+      <Edit editOpen={editOpen} setEditOpen={setEditOpen} classes={classes} setClasses={setClasses}/>
     </div>
   )
 }

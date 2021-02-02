@@ -1,6 +1,6 @@
-# Homework Manager
+# Class Manager
 
-A homework and virtual class management app. Live site at [https://homework-manager.vercel.app/](https://homework-manager.vercel.app/).
+A virtual class management app. Live site at [https://classes.linkaiwu.com/](https://classes.linkaiwu.com/).
 
 ## Available Scripts
 

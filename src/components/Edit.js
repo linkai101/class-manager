@@ -2,19 +2,15 @@ import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { makeStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 
 const useStyles = makeStyles((theme) => ({
-  modalWrapper: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  modal: {
+  dialog: {
     maxHeight: "80%",
     padding: 24,
     background: "#ffffff",
@@ -28,15 +24,15 @@ const useStyles = makeStyles((theme) => ({
       alignItems: "center"
     },
   },
-  modalClassRow: {
+  dialogClassRow: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center"
   }
 }));
 
-export default function Options(props) {
-  const { optionsOpen, setOptionsOpen, classes, setClasses } = props;
+export default function Edit(props) {
+  const { editOpen, setEditOpen, classes, setClasses } = props;
   const [tempClasses, setTempClasses] = React.useState([]);
   const styles = useStyles();
 
@@ -66,15 +62,16 @@ export default function Options(props) {
 
   function handleOnClose() {
     setClasses(tempClasses);
-    setOptionsOpen(false);
+    setEditOpen(false);
   }
 
   return (
-    <Modal open={optionsOpen} onClose={handleOnClose} className={styles.modalWrapper}>
-        <div className={styles.modal}>
+    <Dialog open={editOpen} onClose={handleOnClose} maxWidth="md">
+      <DialogContent>
+        <div className={styles.dialog}>
           {tempClasses.map((classItem) => (
             <form autoComplete="off" key={classItem.id}>
-              <div className={styles.modalClassRow}>
+              <div className={styles.dialogClassRow}>
                 <TextField variant="filled" size="small" label="Name" defaultValue={classItem.name} onChange={(e) => handleFieldChange(classItem, "name", e.target.value)}/>
                 <TextField variant="filled" size="small" label="Meeting URL" defaultValue={classItem.meetingURL} onChange={(e) => handleFieldChange(classItem, "meetingURL", e.target.value)}/>
                 <TextField variant="filled" size="small" label="Notes" defaultValue={classItem.notes} onChange={(e) => handleFieldChange(classItem, "notes", e.target.value)}/>
@@ -85,6 +82,7 @@ export default function Options(props) {
           ))}
           <IconButton size="small" onClick={addBlankClass}><AddCircleOutlineOutlinedIcon/></IconButton>
         </div>
-      </Modal>
+      </DialogContent>
+    </Dialog>
   )
 }
