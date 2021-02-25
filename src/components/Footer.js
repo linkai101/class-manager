@@ -79,6 +79,9 @@ export default function Footer(props) {
         <DialogTitle onClose={() => setExportDialogOpen(false)}>Export Data</DialogTitle>
         <DialogContent>
           Download a JSON file of the classes data. This data can be imported using the Import Data feature.
+          <div style={{paddingTop: 14, lineHeight: 1}}><small><i>
+            Note: All data is saved locally. This feature converts local save data to an importable file.
+          </i></small></div>
         </DialogContent>
         <DialogActions>
           <Button color="primary" onClick={() => {exportData(); setExportDialogOpen(false)}}>Download</Button>

@@ -81,6 +81,7 @@ export default function Edit(props) {
             </form>
           ))}
           <IconButton size="small" onClick={addBlankClass}><AddCircleOutlineOutlinedIcon/></IconButton>
+          <div><small>Note: All data is saved locally.</small></div>
         </div>
       </DialogContent>
     </Dialog>

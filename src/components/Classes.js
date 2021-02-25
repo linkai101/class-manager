@@ -60,10 +60,6 @@ export default function Classes() {
   const { enqueueSnackbar } = useSnackbar();
 
   React.useEffect(() => {
-    // Temporary, make users move data to new site
-    if (window.location.hostname !== "classes.linkaiwu.com")
-      return enqueueSnackbar('Site moved to \'classes.linkaiwu.com\'! Export data and import on new site!', { variant: 'warning', persist: true });
-      
     // Read local save
     const storedDataVersion = localStorage.getItem(LOCAL_STORAGE_VERSION_KEY);
     if (storedDataVersion && storedDataVersion > LOCAL_STORAGE_VERSION)
