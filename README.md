@@ -1,5 +1,6 @@
 # Class Manager
-**Deprecated, visit [classes2](https://github.com/linkai101/classes2)**
+**Deprecated, visit [classes2](https://github.com/linkai101/classes2)**.
+
 A virtual class management app. Live site at [https://classmanager-old.netlify.app/](https://classmanager-old.netlify.app).
 
 ## Available Scripts
