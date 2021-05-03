@@ -1,6 +1,6 @@
 # Class Manager
-
-A virtual class management app. Live site at [https://classes.linkaiwu.com/](https://classes.linkaiwu.com/).
+**Deprecated, visit [classes2](https://github.com/linkai101/classes2)**
+A virtual class management app. Live site at [https://classmanager-old.netlify.app/](https://classmanager-old.netlify.app).
 
 ## Available Scripts
 
